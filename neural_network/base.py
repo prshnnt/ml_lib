@@ -7,6 +7,8 @@ class Module:
         raise NotImplementedError
     def parameters(self):
         return []
+    def grad(self):
+        return []
 
 class Sequential(Module):
     def __init__(self,*layers):
@@ -24,5 +26,10 @@ class Sequential(Module):
         return [
             p for layer in self.layers 
             for p in layer.parameters()
+        ]
+    def grad(self):
+        return [
+            p for layer in self.layers 
+            for p in layer.grad()
         ]
     
