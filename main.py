@@ -21,8 +21,12 @@ def train_modal(modal:Modal):
         Y_all = Y[permutation]
         loss = modal.fit(X_all,Y_all)
         print(f"epoch: {epoch}  loss:{loss:.5f}")
-def test_modal(modal):
-    pass
+def test_modal(modal:Modal):
+    X = test.iloc[0,1:].to_numpy(dtype=np.float16) /255.0
+    result = np.argmax(modal.predict(X))
+    print("Prediction",result)
+    print("Original",test.iloc[0,0])
+
 
 if __name__ == "__main__":
     modal = Modal(shape=[784,128,10],activation=ReLU)
