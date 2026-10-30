@@ -7,7 +7,7 @@ import numpy as np
 # (1,ip) X (ip,op) = output(1,op)
 class Layer(Module):
     def __init__(self,ip,op) -> None:
-        self.W:np.ndarray = np.random.rand(ip,op)  * np.sqrt(2.0 / ip)
+        self.W:np.ndarray = np.random.randn(ip,op)  * np.sqrt(2.0 / ip)
         self.b:np.ndarray = np.zeros((1,op))
 
         self.dW = np.zeros(self.W.shape)

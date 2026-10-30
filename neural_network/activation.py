@@ -17,7 +17,7 @@ class Sigmoid(Module):
         self.y = 1 / (1+np.exp(-x))
         return self.y
     def backward(self, grad_out):
-        derivative = self.y ( 1 - self.y)
+        derivative = self.y * ( 1 - self.y)
         return grad_out * derivative # grad input
 
 class Softmax(Module):
@@ -38,32 +38,10 @@ class Softmax(Module):
         )
         return self.y * (grad_out - dot) # grad input
 
-class SoftmaxCrossEntropy:
-    def forward(self,logits,targets):
-        # logits shape (batch , no of classes/op)
-        # targets shape (batch,) containing class indices
-        self.targets =targets
-        self.batch_size = logits.shape[0]
-
-        shifted_logits = logits - np.max(logits,axis=1 , keepdims=True)
-        exp_logits = np.exp(shifted_logits)
-
-        self.prob = exp_logits / np.sum(exp_logits,axis=1,keepdims=True)
-
-        # CE loss using log-sum-exp
-        log_sum_exp = np.log(
-            np.sum(exp_logits,axis=1)
-        )+np.max(logits,axis=1)
-
-        correct_logits = logits[
-            np.arange(self.batch_size), targets
-        ]
-        loss = np.mean( log_sum_exp - correct_logits)
-        return loss
-    def backward(self):
-        # returns gradiant of mean loss wrt logits
-        # this is like y_hat - y where targets are indexes of values , instead of doing one hot encoding and then subtracting from prediction we just subtract that value
-        grad = self.prob.copy()
-        grad[np.arange(self.batch_size),self.targets] -=1
-        grad/=self.batch_size
-        return grad
+class LeakyReLU(Module):
+    alpha=0.01
+    def forward(self, x):
+        self.mask = (x > 0) +( self.alpha*(x<0))
+        return x * self.mask
+    def backward(self, grad_out):
+        return self.mask
