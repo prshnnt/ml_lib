@@ -44,4 +44,4 @@ class LeakyReLU(Module):
         self.mask = (x > 0) +( self.alpha*(x<0))
         return x * self.mask
     def backward(self, grad_out):
-        return self.mask
+        return grad_out * self.mask
