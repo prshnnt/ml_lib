@@ -3,7 +3,7 @@ from neural_network.criterion import MSELoss
 import numpy as np
 import pandas as pd
 from neural_network import Modal
-from neural_network.activation import ReLU , LeakyReLU
+from neural_network.activation import ReLU , LeakyReLU ,Sigmoid
 from optimizer import SGD
 
 train = pd.read_csv("./sample_data/mnist_train_small.csv", header=None)
@@ -11,7 +11,7 @@ test = pd.read_csv("./sample_data/mnist_test.csv", header=None)
 
 lr = 0.01
 beta = .9
-EPOCHS = 10
+EPOCHS = 20
 batch_size = 32
 
 
